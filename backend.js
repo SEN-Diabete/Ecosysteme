@@ -35,7 +35,7 @@ async function callBackend(sheet, action = 'get', params = {}) {
 
 // ---------------- AUTHENTIFICATION ----------------
 async function loginUser(phone, password) {
-    return await callBackend('Gestion Utilisateurs', 'auth', {phone, password});
+    return await callBackend('Utilisateurs', 'auth', {phone, password});
 }
 
 async function logoutUser() {
@@ -46,37 +46,37 @@ async function logoutUser() {
 
 // ---------------- PATIENTS ----------------
 async function getPatients(limit = 100) {
-    return await callBackend('App Patient SuiviMED', 'getAll', {limit});
+    return await callBackend('SuiviMED', 'getAll', {limit});
 }
 
 async function getPatientByPhone(phone) {
-    return await callBackend('App Patient SuiviMED', 'getByPhone', {phone});
+    return await callBackend('SuiviMED', 'getByPhone', {phone});
 }
 
 async function addGlycemie(data) {
-    return await callBackend('App Patient SuiviMED', 'add', data);
+    return await callBackend('SuiviMED', 'add', data);
 }
 
 async function checkGlycemieAlert(glycemieValue) {
-    return await callBackend('App Patient SuiviMED', 'checkAlert', {'Valeur glycémie': glycemieValue});
+    return await callBackend('SuiviMED', 'checkAlert', {'Valeur glycémie': glycemieValue});
 }
 
 // ---------------- PHARMACIES ----------------
 async function getPharmaciePatients() {
-    return await callBackend('Point Conseil Diabète', 'getAll');
+    return await callBackend('Point Conseil Diabete', 'getAll');
 }
 
 async function addPharmaciePatient(data) {
-    return await callBackend('Point Conseil Diabète', 'add', data);
+    return await callBackend('Point Conseil Diabete', 'add', data);
 }
 
 // ---------------- TABLEAU DE BORD ----------------
 async function getTableauBordData() {
-    return await callBackend('Tableau de bord SEN\'Diabète', 'getAll');
+    return await callBackend('Dashboard SENDiabete', 'getAll');
 }
 
 async function getStatsMensuelles(mois) {
-    return await callBackend('Tableau de bord SEN\'Diabète', 'getStats', {mois});
+    return await callBackend('Dashboard SENDiabete', 'getStats', {mois});
 }
 
 // ---------------- ORDONNANCES ----------------
@@ -93,45 +93,45 @@ async function addOrdonnance(data) {
 
 // ---------------- WOYOFAL SANTÉ ----------------
 async function getWoyofalVisites() {
-    return await callBackend('Woyofal Santé', 'getAll');
+    return await callBackend('Woyofal Sante', 'getAll');
 }
 
 async function addWoyofalVisite(data) {
-    return await callBackend('Woyofal Santé', 'add', data);
+    return await callBackend('Woyofal Sante', 'add', data);
 }
 
 async function getWoyofalPaiements() {
-    return await callBackend('Woyofal Santé', 'getPaiements');
+    return await callBackend('Woyofal Sante', 'getPaiements');
 }
 
 // ---------------- PLATEFORME DE TRIAGE ----------------
 async function getAlertes() {
-    return await callBackend('Plateforme de Triage', 'getAll');
+    return await callBackend('PlateformeTriage', 'getAll');
 }
 
 async function getAlertesUrgentes() {
-    return await callBackend('Plateforme de Triage', 'getUrgentes');
+    return await callBackend('PlateformeTriage', 'getUrgentes');
 }
 
 async function updateAlerteStatut(alerteId, statut) {
-    return await callBackend('Plateforme de Triage', 'updateStatut', {id: alerteId, statut});
+    return await callBackend('PlateformeTriage', 'updateStatut', {id: alerteId, statut});
 }
 
 // ---------------- STRUCTURES DE SANTÉ ----------------
 async function getStructuresSante() {
-    return await callBackend('Structures Urgence', 'getAll');
+    return await callBackend('Structures_Urgence', 'getAll');
 }
 
 async function getStructuresByRegion(region) {
-    return await callBackend('Structures Urgence', 'getByRegion', {region});
+    return await callBackend('Structures_Urgence', 'getByRegion', {region});
 }
 
 // ---------------- MESSAGES PRÉDÉFINIS ----------------
 async function getMessagesPredefinis(type = null) {
     if (type) {
-        return await callBackend('Message Prédéfinis', 'getByType', {type});
+        return await callBackend('MessagesPredefinis', 'getByType', {type});
     }
-    return await callBackend('Message Prédéfinis', 'getAll');
+    return await callBackend('MessagesPredefinis', 'getAll');
 }
 
 // ---------------- UTILITAIRES ----------------
