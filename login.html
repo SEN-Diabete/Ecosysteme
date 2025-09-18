@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - SEN'Diabète Services</title>
+    <title>Connexion - SEN'Diabète</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #4285f4;
-            --secondary-color: #34a853;
-            --accent-color: #fbbc05;
-            --error-color: #ea4335;
-            --background-color: #f8f9fa;
+            --primary-color: #2a7de1;
+            --secondary-color: #3ab795;
+            --accent-color: #ff9e1b;
+            --error-color: #e63946;
+            --background-color: #f0f7ff;
             --card-color: #ffffff;
-            --text-color: #202124;
-            --text-light: #5f6368;
+            --text-color: #2d3748;
+            --text-light: #718096;
         }
         
         * {
@@ -30,13 +31,13 @@
             align-items: center;
             min-height: 100vh;
             color: var(--text-color);
-            background-image: linear-gradient(135deg, rgba(66, 133, 244, 0.05) 0%, rgba(52, 168, 83, 0.05) 100%);
+            background-image: linear-gradient(135deg, rgba(42, 125, 225, 0.05) 0%, rgba(58, 183, 149, 0.05) 100%);
+            padding: 20px;
         }
         
         .login-container {
             width: 100%;
             max-width: 420px;
-            padding: 20px;
         }
         
         .login-card {
@@ -46,6 +47,7 @@
             padding: 40px 35px;
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
         }
         
         .login-card:hover {
@@ -68,13 +70,17 @@
             margin: 0 auto 15px;
             color: white;
             font-size: 28px;
-            font-weight: bold;
         }
         
         .logo h1 {
             font-size: 24px;
             font-weight: 600;
             color: var(--text-color);
+        }
+        
+        .logo p {
+            color: var(--text-light);
+            margin-top: 5px;
         }
         
         .form-group {
@@ -114,7 +120,7 @@
         .form-control:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+            box-shadow: 0 0 0 2px rgba(42, 125, 225, 0.2);
         }
         
         .btn-login {
@@ -129,11 +135,17 @@
             cursor: pointer;
             transition: all 0.3s ease;
             margin-top: 10px;
+            position: relative;
         }
         
         .btn-login:hover {
-            background: linear-gradient(135deg, #3367d6, #2c984d);
-            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+            background: linear-gradient(135deg, #1c6bc0, #2c984d);
+            box-shadow: 0 4px 12px rgba(42, 125, 225, 0.3);
+        }
+        
+        .btn-login:disabled {
+            background: #ccc;
+            cursor: not-allowed;
         }
         
         .btn-login:active {
@@ -161,7 +173,7 @@
         
         .footer-links a:hover {
             text-decoration: underline;
-            color: #3367d6;
+            color: #1c6bc0;
         }
         
         .divider {
@@ -183,6 +195,36 @@
             font-size: 14px;
         }
         
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -10px;
+            margin-left: -10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         @media (max-width: 480px) {
             .login-card {
                 padding: 30px 25px;
@@ -198,16 +240,19 @@
     <div class="login-container">
         <div class="login-card">
             <div class="logo">
-                <div class="logo-icon">M</div>
-                <h1>SEN'Diabète Services</h1>
+                <div class="logo-icon">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h1>SEN'Diabète</h1>
+                <p>Connexion à l'écosystème</p>
             </div>
             
             <form id="login-form">
                 <div class="form-group">
-                    <label for="username">ID Utilisateur</label>
+                    <label for="username">Nom d'utilisateur</label>
                     <div class="input-with-icon">
                         <div class="input-icon">👤</div>
-                        <input type="text" id="username" class="form-control" placeholder="Votre ID utilisateur" required>
+                        <input type="text" id="username" class="form-control" placeholder="Votre nom d'utilisateur" required>
                     </div>
                 </div>
                 
@@ -217,41 +262,98 @@
                         <div class="input-icon">🔒</div>
                         <input type="password" id="password" class="form-control" placeholder="Votre mot de passe" required>
                     </div>
-                    <div id="password-error" class="error-message">Mot de passe incorrect</div>
+                    <div id="password-error" class="error-message">Identifiants incorrects</div>
                 </div>
                 
-                <button type="submit" class="btn-login">Se connecter</button>
+                <button type="submit" class="btn-login" id="login-button">
+                    <span id="button-text">Se connecter</span>
+                    <div class="loading-spinner" id="loading-spinner"></div>
+                </button>
                 
                 <div class="divider"><span>ou</span></div>
                 
                 <div class="footer-links">
                     <p>Vous avez oublié vos identifiants ? <a href="#" id="forgot-password">Contactez l'administrateur</a></p>
                 </div>
+                
+                <a href="index.html" class="back-link">← Retour à l'accueil</a>
             </form>
         </div>
     </div>
 
     <script>
-        document.getElementById('login-form').addEventListener('submit', function(e) {
+        // URL de votre Web App Google Apps Script
+        const API_URL = 'https://script.google.com/macros/s/AKfycbz7zIZkPW7-5lIVxkbwjpg2o5NuDdS4Wz6wlZ_KR7t_P7tq1lTBDbHYe6QsYYNEDq7L/exec';
+        
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+            const loginButton = document.getElementById('login-button');
+            const buttonText = document.getElementById('button-text');
+            const spinner = document.getElementById('loading-spinner');
+            const errorDiv = document.getElementById('password-error');
             
-            // Simulation de vérification (à remplacer par l'appel à votre Google Sheets)
-            if (ID Utilisateur && password) {
-                // Ici, vous intégrerez la logique de vérification avec votre Google Sheets
-                // Pour l'instant, simulation d'une connexion réussie
-                alert('Connexion simulée avec succès! En production, cela vérifiera avec votre Google Sheets.');
-                // window.location.href = 'dashboard.html'; // Redirection après connexion
-            } else {
-                document.getElementById('password-error').style.display = 'block';
+            // Cacher les erreurs précédentes
+            errorDiv.style.display = 'none';
+            
+            // Afficher l'indicateur de chargement
+            loginButton.disabled = true;
+            buttonText.textContent = 'Connexion...';
+            spinner.style.display = 'block';
+            
+            // Récupérer le service demandé depuis l'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const service = urlParams.get('service');
+            
+            try {
+                // Appel à l'API Google Apps Script
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'login',
+                        username: username,
+                        password: password
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Connexion réussie - déterminer la redirection
+                    let redirectPage = 'index.html'; // Par défaut
+                    
+                    if (service === 'pointconseil') redirectPage = 'pointconseildiabete.html';
+                    else if (service === 'suivimed') redirectPage = 'SuiviMED.html';
+                    else if (service === 'dashboard') redirectPage = 'dashboardSENDiabete.html';
+                    else if (service === 'triage') redirectPage = 'plateformetriage.html';
+                    
+                    // Redirection vers le service approprié
+                    window.location.href = redirectPage;
+                } else {
+                    // Afficher l'erreur
+                    errorDiv.textContent = data.message || 'Identifiants incorrects';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Erreur de connexion:', error);
+                errorDiv.textContent = 'Erreur de connexion au serveur. Veuillez réessayer.';
+                errorDiv.style.display = 'block';
+            } finally {
+                // Cacher l'indicateur de chargement
+                loginButton.disabled = false;
+                buttonText.textContent = 'Se connecter';
+                spinner.style.display = 'none';
             }
         });
         
         document.getElementById('forgot-password').addEventListener('click', function(e) {
             e.preventDefault();
-            alert("Veuillez contacter l'administrateur pour réinitialiser vos identifiants.");
+            alert("Veuillez contacter l'administrateur à contact@sendiabete.sn pour réinitialiser vos identifiants.");
         });
     </script>
 </body>
