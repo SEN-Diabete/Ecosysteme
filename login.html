@@ -308,16 +308,17 @@
             const service = urlParams.get('service');
             
             try {
-                // Appel à l'API Google Apps Script
+                // Appel à l'API Google Apps Script avec les bons paramètres
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: JSON.stringify({
-                        action: 'login',
-                        username: username,
-                        password: password
+                    body: new URLSearchParams({
+                        'sheet': 'Utilisateurs',
+                        'action': 'auth',
+                        'phone': username,
+                        'password': password
                     })
                 });
                 
@@ -336,7 +337,7 @@
                     window.location.href = redirectPage;
                 } else {
                     // Afficher l'erreur
-                    errorDiv.textContent = data.message || 'Identifiants incorrects';
+                    errorDiv.textContent = data.error || 'Identifiants incorrects';
                     errorDiv.style.display = 'block';
                 }
             } catch (error) {
