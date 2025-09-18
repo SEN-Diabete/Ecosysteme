@@ -572,8 +572,8 @@
     </div>
 
     <script>
-        // Configuration - NOUVELLE URL
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw6GyEJFHLId76bLzfnvRG-C7I8S1zoDNLjL50QkZioyrQ3936x2inXFuoiYDbsUO-3/exec";
+        // Configuration - URL de votre Web App Google Apps Script
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz7zIZkPW7-5lIVxkbwjpg2o5NuDdS4Wz6wlZ_KR7t_P7tq1lTBDbHYe6QsYYNEDq7L/exec";
         
         // Gestion des onglets
         document.querySelectorAll('.tab').forEach(tab => {
@@ -608,17 +608,17 @@
             fetch(WEB_APP_URL, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: JSON.stringify({
-                    sheet: 'Point Conseil Diabète',
-                    action: 'add',
+                body: new URLSearchParams({
+                    'sheet': 'Point Conseil Diabète',
+                    'action': 'add',
                     ...patientData
                 })
             })
             .then(response => response.json())
             .then(data => {
-                if (data.status === "ok") {
+                if (data.status === "success" || data.success) {
                     alert('Patient enregistré avec succès!');
                     this.reset();
                     
@@ -627,7 +627,7 @@
                         checkForAlerts(patientData);
                     }
                 } else {
-                    alert('Erreur lors de l\'enregistrement: ' + data.message);
+                    alert('Erreur lors de l\'enregistrement: ' + (data.error || 'Erreur inconnue'));
                 }
             })
             .catch(error => {
@@ -674,17 +674,17 @@
             fetch(WEB_APP_URL, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: JSON.stringify({
-                    sheet: 'Plateforme de Triage',
-                    action: 'add',
+                body: new URLSearchParams({
+                    'sheet': 'Plateforme de Triage',
+                    'action': 'add',
                     ...alertData
                 })
             })
             .then(response => response.json())
             .then(data => {
-                if (data.status === "ok") {
+                if (data.status === "success" || data.success) {
                     console.log('Alerte enregistrée avec succès');
                 }
             })
